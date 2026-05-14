@@ -2,6 +2,10 @@
 
 `PDF Vault` is a Flutter app for Android and iOS that removes password protection from a PDF when the user already knows the password.
 
+## App Icon
+
+![PDF 解密 App Icon](assets/branding/app-icon.png)
+
 ## What This Project Does
 
 - Input: an encrypted PDF file and its known password
