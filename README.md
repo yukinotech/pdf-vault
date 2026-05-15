@@ -161,6 +161,27 @@ cd <repo-root>
 flutter build appbundle --release
 ```
 
+## CI and Release
+
+GitHub Actions are split into two lanes:
+
+- `CI` runs on pull requests, pushes to `main`, and manual dispatch. It checks formatting, analysis, tests, Android debug build, and iOS debug build.
+- `Release` runs from version tags like `v1.1.0`. It rebuilds release assets from the tagged source and publishes a GitHub Release.
+
+The app version lives in `pubspec.yaml`:
+
+```yaml
+version: 1.1.0+2
+```
+
+Use the release helper when publishing the current `main`:
+
+```bash
+scripts/release_main.sh v1.1.0
+```
+
+See [Release Workflow](docs/release.md) for the full `git`/`gh` flow.
+
 ## Manual Validation
 
 Suggested flow:
