@@ -81,6 +81,8 @@ If a change affects platform file handling or export behavior, also do a manual 
 - Main workspace path: `/Users/zyf/workspace/pdf-vault`
 - Git remote uses SSH
 - Prefer `gh` for GitHub workflow and `git` for commits/history
+- App versions live in `pubspec.yaml` as `MAJOR.MINOR.PATCH+BUILD`.
+- Release tags use `vMAJOR.MINOR.PATCH` and must match the `pubspec.yaml` product version.
 
 Useful commands:
 
@@ -93,6 +95,18 @@ gh repo view
 gh pr status
 gh pr create
 ```
+
+## Release Expectations
+
+When the user asks to release the current `main`, use the repository release helper:
+
+```bash
+scripts/release_main.sh v1.1.0
+```
+
+If the user does not specify a version, inspect `pubspec.yaml` and existing tags before deciding whether to reuse the current version or ask for a version bump. The helper switches to `main`, fast-forwards from `origin/main`, updates `pubspec.yaml` when needed, waits for CI, creates an annotated tag, pushes it, and waits for the Release workflow.
+
+Do not publish a GitHub Release directly from a random CI artifact. The release workflow should rebuild assets from the tagged source and attach those assets to the GitHub Release.
 
 ## Test Data
 
