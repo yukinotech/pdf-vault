@@ -119,6 +119,19 @@ cd <repo-root>
 flutter build ios --release --no-codesign
 ```
 
+Package sideload IPA (AltStore/SideStore/Sideloadly):
+
+```bash
+cd <repo-root>
+TAG="v1.0.1"
+flutter build ios --release --no-codesign
+rm -rf Payload
+mkdir Payload
+cp -R build/ios/iphoneos/Runner.app Payload/
+zip -qry "pdf-vault-ios-${TAG}.ipa" Payload
+rm -rf Payload
+```
+
 Open Xcode project for archive/signing/export:
 
 ```bash
@@ -180,7 +193,38 @@ Use the release helper when publishing the current `main`:
 scripts/release_main.sh v1.1.0
 ```
 
+For tagged releases, GitHub Actions now publishes both iOS assets:
+
+- `pdf-vault-ios-vX.Y.Z.ipa` for sideload users
+- `pdf-vault-ios-unsigned-vX.Y.Z.zip` for developers
+
 See [Release Workflow](docs/release.md) for the full `git`/`gh` flow.
+
+## iOS Install (GitHub Release Sideload)
+
+The iOS build is distributed as an `.ipa` in GitHub Releases.
+
+Because of iOS platform restrictions, the `.ipa` is not directly installable from Safari. Use a sideload tool such as AltStore, SideStore, or Sideloadly.
+
+Manual IPA install:
+
+1. Download latest `pdf-vault-ios-vX.Y.Z.ipa` from Releases.
+2. Open AltStore / SideStore / Sideloadly on your computer or device.
+3. Select the `.ipa` file.
+4. Sign with your own Apple ID and install.
+
+Optional AltStore source mode:
+
+- Host an AltStore source JSON and add it in AltStore.
+- Template: `docs/AltStore.source.example.json`
+
+Sideload limitations:
+
+- Not App Store distribution.
+- Not one-tap Safari install.
+- Requires user-side signing with Apple ID.
+- Free Apple ID usually requires periodic refresh.
+- Sideloaded app count is limited by Apple policy.
 
 ## Manual Validation
 
