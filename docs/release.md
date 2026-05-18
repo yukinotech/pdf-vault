@@ -51,8 +51,34 @@ The `Release` workflow builds these assets from the tagged source:
 
 - split Android release APKs
 - Android release app bundle
-- unsigned iOS release app zip
+- iOS sideload IPA (`pdf-vault-ios-vX.Y.Z.ipa`)
+- unsigned iOS app zip (`pdf-vault-ios-unsigned-vX.Y.Z.zip`)
 
 The Android release assets currently follow the repository's local release
-signing setup. The iOS zip is unsigned and is meant for verification only until
-App Store signing is configured.
+signing setup.
+
+The iOS `.ipa` is intended for sideload tools (AltStore/SideStore/Sideloadly),
+not direct iOS native install. The unsigned zip is kept for developer-side
+inspection and debugging.
+
+## Local iOS Packaging For Sideload
+
+Build unsigned iOS app and package `Runner.app` into a standard IPA structure:
+
+```bash
+flutter build ios --release --no-codesign
+
+rm -rf Payload
+mkdir Payload
+cp -R build/ios/iphoneos/Runner.app Payload/
+zip -qry pdf-vault-ios-v1.0.1.ipa Payload
+rm -rf Payload
+```
+
+The IPA must contain:
+
+```text
+pdf-vault-ios-v1.0.1.ipa
+└── Payload/
+    └── Runner.app/
+```

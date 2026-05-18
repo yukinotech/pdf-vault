@@ -99,7 +99,7 @@ jobs:
           if-no-files-found: error
 
   ios-release:
-    name: iOS Unsigned Release Asset
+    name: iOS Release Assets
     runs-on: macos-latest
     needs: validate
 
@@ -122,10 +122,20 @@ jobs:
       - name: Build unsigned iOS release app
         run: flutter build ios --release --no-codesign
 
-      - name: Collect iOS asset
+      - name: Package iOS sideload IPA
+        run: |
+          set -euo pipefail
+          rm -rf Payload
+          mkdir Payload
+          cp -R build/ios/iphoneos/Runner.app Payload/
+          zip -qry "pdf-vault-ios-${RELEASE_TAG}.ipa" Payload
+          rm -rf Payload
+
+      - name: Collect iOS assets
         run: |
           set -euo pipefail
           mkdir -p dist
+          mv "pdf-vault-ios-${RELEASE_TAG}.ipa" dist/
           ditto -c -k --keepParent build/ios/iphoneos/Runner.app "dist/pdf-vault-ios-unsigned-${RELEASE_TAG}.zip"
 
       - name: Upload iOS asset
@@ -165,7 +175,11 @@ jobs:
           cat > release-notes.md <<NOTES
           Release ${RELEASE_TAG}
 
-          Android assets are built from the tagged source. The iOS zip is unsigned and intended for verification only until App Store signing is configured.
+          Android assets are built from the tagged source.
+
+          iOS assets:
+          - pdf-vault-ios-${RELEASE_TAG}.ipa: sideload package for AltStore/SideStore/Sideloadly.
+          - pdf-vault-ios-unsigned-${RELEASE_TAG}.zip: unsigned Runner.app archive for developers.
           NOTES
 
           if gh release view "${RELEASE_TAG}" >/dev/null 2>&1; then

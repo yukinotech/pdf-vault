@@ -1,0 +1,30 @@
+{
+  "name": "PDF Vault",
+  "identifier": "com.yukinotech.pdfvault.source",
+  "subtitle": "PDF Vault sideload source",
+  "description": "Unofficial sideload source for PDF Vault iOS builds.",
+  "sourceURL": "https://your-domain.com/AltStore.json",
+  "apps": [
+    {
+      "name": "PDF Vault",
+      "bundleIdentifier": "com.yukinotech.pdfvault",
+      "developerName": "YukinoTech",
+      "subtitle": "Local PDF unlock utility",
+      "localizedDescription": "A local PDF unlock app distributed as an IPA for sideloading.",
+      "iconURL": "https://your-domain.com/icons/pdf-vault.png",
+      "tintColor": "5E5CE6",
+      "category": "utilities",
+      "versions": [
+        {
+          "version": "1.0.1",
+          "buildVersion": "2",
+          "date": "2026-05-18",
+          "downloadURL": "https://github.com/yourname/pdf-vault/releases/download/v1.0.1/pdf-vault-ios-v1.0.1.ipa",
+          "size": 12345678
+        }
+      ],
+      "appPermissions": {}
+    }
+  ],
+  "news": []
+}
